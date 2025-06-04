@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>3month7</title>
+    <link rel="icon" href="./photo/37Favicon.jpg" type="image/x-icon">
+    <style>
+        .butt {
+            display: flex;
+            justify-content: center;
+            /* align-items: center; */
+            padding-top: 7%;
+        }
+
+        .dbg {
+            width: 100%;
+            height: 100%;
+            background-image: url(./photo/bg1.png);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+
+            position: absolute;
+        }
+
+        .bg37 {
+            display: inline-block;
+            width: 500px;
+            height: 610px;
+            border: 2px solid rgb(97, 97, 210);
+            background-image: url(./photo/37bg.jpg);
+            background-size: 100%;
+            /* background-size: cover; */
+            background-position: contain, 100%;
+            /* background-repeat: no-repeat; */
+            position: relative;
+        }
+
+        .yl {
+            width: 200px;
+            height: 200px;
+            margin-left: 5px;
+            background-image: url(./photo/yunli.png);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: absolute
+        }
+
+        .but-image {
+            display: inline-block;
+            border: none;
+            background: none;
+            cursor: pointer;
+            padding: 0;
+            padding-top: 9px;
+            padding-left: 39px;
+        }
+
+
+        .but-image img {
+            width: 180px;
+            height: auto;
+            transition: transform 0.3s;
+            opacity: 0;
+            /* transition: opacity 0.3s ease; */
+        }
+
+        .but-image:hover img {
+            opacity: 1;
+            transform: translateY(0);
+            transform: scale(1.2);
+            /* 悬停时轻微放大 */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dbg">
+        <div class="yl"></div>
+        <div class="butt">
+            <button class="bg37" onclick="shutdownBackend()">
+                <div class="but-image">
+                    <img src="./photo/button1.jpeg">
+                </div>
+            </button>
+            <!-- <p id="result"></p> -->
+        </div>
+
+
+    </div>
+    <div id="result" style="display: none; position: fixed; top: 20px; right: 20px; background: #ffebee; padding: 10px; border-radius: 4px; border: 1px solid #ef9a9a;"></div>
+    <script>
+        function shutdownBackend() {
+            // 发送请求到后端的关闭接口
+            fetch('/shutdown', {
+                method: 'POST'
+            })
+                .then(response => response.text())
+                .then(text => {
+                    document.getElementById('result').textContent = text;
+                    // errorElement.style.display = 'block'; // 显示错误元素
+                })
+                .catch(error => {
+                    const errorElement = document.getElementById('result');
+                    errorElement.textContent = '请求失败: ' + error.message;
+                    errorElement.style.display = 'block'; // 显示错误元素
+                });
+        }
+    </script>
+</body>
+
+</html>
