@@ -1,7 +1,5 @@
 package main
 
-// YIXUAN0606
-
 import (
 	"fmt"
 	"log"
@@ -47,19 +45,35 @@ func main() {
 		if Button == false || (time.Now().Hour() == 18 && time.Now().Minute() >= 30) {
 			c1.Stop()
 		} else {
-			textMsg := msg.TextMessage{
+			textMsg1 := msg.TextMessage{
 				MsgType: "text",
 				// Text: struct {
 				// 	Content string `json:"content"`
 				// }{Content: "this is test"}, // 这是匿名结构体
 				Text: msg.Text{
-					Content: "记得打卡...",
+					Content: "卡芙卡来电:记得打卡...",
 				},
 			}
-			if err1 := msg.SendMessage(textMsg); err1 != nil {
+			textMsg2 := msg.TextMessage{
+				MsgType: "image",
+				// Text: struct {
+				// 	Content string `json:"content"`
+				// }{Content: "this is test"}, // 这是匿名结构体
+				Image: msg.Image{
+					Base64: msg.MsgPhotoBase64(),
+					Md5:    msg.MsgPhotoMd5(),
+				},
+			}
+			if err1 := msg.SendMessage(textMsg1); err1 != nil {
 				fmt.Printf("发送文本失败!%v\n", err1)
 			} else {
 				fmt.Println("发送文本成功!")
+			}
+			time.Sleep(time.Second)
+			if err2 := msg.SendMessage(textMsg2); err2 != nil {
+				fmt.Printf("发送图片失败!%v\n", err2)
+			} else {
+				fmt.Println("发送图片成功!")
 			}
 
 			// fmt.Printf("定时任务,每两秒执行:%v\n", time.Now().Format("15:04:05"))
@@ -85,6 +99,20 @@ func main() {
 	}
 	c2.Start()
 
+	// 6点再开次任务，防止之前手欠提前误点
+	c3 := cron.New(cron.WithSeconds())
+	_, err3 := c3.AddFunc("0 0 18 * * 1-5", func() {
+		Button = true
+		c1.Start()
+	})
+	if err3 != nil {
+		log.Fatal("添加取消任务失败:", err2)
+	}
+	c3.Start()
+
+	// 配置静态路径，用于html的图片路径识别
+	fs := http.FileServer(http.Dir("./web")) // 假设图片在项目根目录的 public 文件夹
+	http.Handle("/static/", http.StripPrefix("/static/", fs))
 	// 设置路由
 	http.HandleFunc("/", serveIndex)
 	http.HandleFunc("/shutdown", shutdownHandler)

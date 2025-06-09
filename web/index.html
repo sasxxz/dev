@@ -2,8 +2,31 @@
 <html>
 
 <head>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            /* 禁用滚动 */
+            height: 100vh;
+            /* 满屏高度 */
+            width: 100vw;
+            /* 满屏宽度 */
+            background: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial;
+        }
+
+        .content {
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
     <title>3month7</title>
-    <link rel="icon" href="./photo/37Favicon.jpg" type="image/x-icon">
+    <link rel="icon" href="/static/photo/37Favicon.jpg" type="image/x-icon">
     <style>
         .butt {
             display: flex;
@@ -15,7 +38,7 @@
         .dbg {
             width: 100%;
             height: 100%;
-            background-image: url(./photo/bg1.png);
+            background-image: url(/static/photo/bg1.png);
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -26,14 +49,14 @@
 
         .bg37 {
             display: inline-block;
-            width: 500px;
-            height: 610px;
+            width: 400px;
+            height: 510px;
             border: 2px solid rgb(97, 97, 210);
-            background-image: url(./photo/37bg.jpg);
-            background-size: 100%;
-            /* background-size: cover; */
-            background-position: contain, 100%;
-            /* background-repeat: no-repeat; */
+            background-image: url(/static/photo/37bg.jpg);
+            /* background-size: 100%; */
+            background-size: cover;
+            background-position: top;
+            background-repeat: no-repeat;
             position: relative;
         }
 
@@ -41,7 +64,7 @@
             width: 200px;
             height: 200px;
             margin-left: 5px;
-            background-image: url(./photo/yunli.png);
+            background-image: url(/static/photo/yunli.png);
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -54,13 +77,13 @@
             background: none;
             cursor: pointer;
             padding: 0;
-            padding-top: 9px;
-            padding-left: 39px;
+            padding-bottom: 20px;
+            padding-left: 30px;
         }
 
 
         .but-image img {
-            width: 180px;
+            width: 130px;
             height: auto;
             transition: transform 0.3s;
             opacity: 0;
@@ -82,7 +105,7 @@
         <div class="butt">
             <button class="bg37" onclick="shutdownBackend()">
                 <div class="but-image">
-                    <img src="./photo/button1.jpeg">
+                    <img src="/static/photo/button1.jpeg">
                 </div>
             </button>
             <!-- <p id="result"></p> -->
@@ -90,7 +113,9 @@
 
 
     </div>
-    <div id="result" style="display: none; position: fixed; top: 20px; right: 20px; background: #ffebee; padding: 10px; border-radius: 4px; border: 1px solid #ef9a9a;"></div>
+    <div id="result"
+        style="display: none; position: fixed; top: 20px; right: 20px; background: #ffebee; padding: 10px; border-radius: 4px; border: 1px solid #ef9a9a;">
+    </div>
     <script>
         function shutdownBackend() {
             // 发送请求到后端的关闭接口
@@ -99,8 +124,10 @@
             })
                 .then(response => response.text())
                 .then(text => {
-                    document.getElementById('result').textContent = text;
-                    // errorElement.style.display = 'block'; // 显示错误元素
+                    const okElement = document.getElementById('result');
+                    okElement.textContent = '愿我们在清醒的世界再会...';
+                    okElement.style.display = 'block'; // 显示正确元素
+                    // document.getElementById('result').textContent = text;
                 })
                 .catch(error => {
                     const errorElement = document.getElementById('result');
